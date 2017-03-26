@@ -11,6 +11,6 @@ An open source MIT License wav file decoder and encoder.
 # Credits
  - Chris Soderquist : [dakkra.com](http://dakkra.com)
  
-#License
+# License
 See [LICENSE](./LICENSE)
  
