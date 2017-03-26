@@ -2,13 +2,10 @@ group 'dakkra'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
-apply plugin: 'application'
 apply plugin: 'idea'
 
 mainClassName = 'com.dakkra.openwav'
 sourceCompatibility = 1.8
-
-//TODO add jar clause here
 
 repositories {
     mavenCentral()
