@@ -81,6 +81,7 @@ public class WavFile {
 
     /**
      * Closes the stream to source file. All fields still remain
+     *
      * @throws IOException
      */
     public void close() throws IOException {
@@ -173,10 +174,10 @@ public class WavFile {
      *
      * @return Sample in long
      */
-    private long readSample(long offset) throws IOException {
+    private long readSample(long skipFrames) throws IOException, WavFileException {
         long sample = 0;
         byte buffer[] = new byte[bitsPerSample.convert() / 8];
-        inputStream.skip(offset);
+        inputStream.skip(skipFrames);
         int delta = inputStream.read(buffer);
         if (delta != -1) {
             dataOffset += delta;
@@ -194,6 +195,11 @@ public class WavFile {
         return sample;
     }
 
+    /**
+     * Test to see if the wav file has two channels
+     *
+     * @return numChannels == 2
+     */
     public boolean isStereo() {
         return (numChannels.convert() == 2);
     }
@@ -211,6 +217,11 @@ public class WavFile {
         return bitsPerSample.convert();
     }
 
+    /**
+     * Caclulated from file meta-data
+     *
+     * @return fileSize form meta data
+     */
     public int getFileSize() {
         return subchunk1Size.convert() + 8;
     }
@@ -220,31 +231,58 @@ public class WavFile {
     }
 
     //FRAME GRABBING - double
-    public int readFrames(double[] frameBuffer) throws IOException {
+
+    /**
+     * Reads double values into array buffer
+     *
+     * @param frameBuffer array to read into
+     * @return number of samples read
+     * @throws IOException
+     */
+    public int readFrames(double[] frameBuffer) throws IOException, WavFileException {
         return readFrames(frameBuffer, 0);
     }
 
-    public int readFrames(double[] frameBuffer, int offset) throws IOException {
+    /**
+     * Reads double values into array buffer
+     *
+     * @param frameBuffer array to read into
+     * @param skipFrames  amount of frames to skip
+     * @return number of smaples read
+     * @throws IOException
+     */
+    public int readFrames(double[] frameBuffer, int skipFrames) throws IOException, WavFileException {
+        int samplesRead = 0;
         for (int f = 0; f < frameBuffer.length; f++) {
-            frameBuffer[f] = (double) readSample(0) / (double) (Long.MAX_VALUE >> (64 - bitsPerSample.convert()));
+            frameBuffer[f] = (double) readSample(skipFrames) / (double) (Long.MAX_VALUE >> (64 - bitsPerSample.convert()));
+            samplesRead++;
         }
-        return frameBuffer.length;
+        return samplesRead;
     }
 
     //UTIL
-    public long bytesToLong(byte bytes[]) {
+    public long bytesToLong(byte bytes[]) throws WavFileException {
+        if (bytes.length != 8)
+            throw new WavFileException("INVALID ARRAY SIZE. MUST BE 8");
+
         bb = ByteBuffer.wrap(bytes);
         bb.order(ByteOrder.BIG_ENDIAN);
         return bb.getLong();
     }
 
-    public int bytesToInt(byte bytes[]) {
+    public int bytesToInt(byte bytes[]) throws WavFileException {
+        if (bytes.length != 4)
+            throw new WavFileException("INVALID ARRAY SIZE. MUST BE 4");
+
         bb = ByteBuffer.wrap(bytes);
         bb.order(ByteOrder.BIG_ENDIAN);
         return bb.getInt();
     }
 
-    public short bytesToShort(byte bytes[]) {
+    public short bytesToShort(byte bytes[]) throws WavFileException {
+        if (bytes.length != 2)
+            throw new WavFileException("INVALID ARRAY SIZE. MUST BE 2");
+
         bb = ByteBuffer.wrap(bytes);
         bb.order(ByteOrder.BIG_ENDIAN);
         return bb.getShort();
