@@ -213,7 +213,7 @@ public class WavFile {
         return samplerate.convert();
     }
 
-    public int getBitRate() {
+    public int getBitDepth() {
         return bitsPerSample.convert();
     }
 
