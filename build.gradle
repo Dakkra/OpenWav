@@ -6,6 +6,18 @@ apply plugin: 'idea'
 
 sourceCompatibility = 1.8
 
+jar {
+    manifest {
+        attributes 'Name': 'OpenWav',
+                'Specification-Title': 'Pure Java Open Wav Codec',
+                'Specification-Vendor': 'Chris Soderquist (Dakkra)',
+                'Specification-Version': version,
+                'Implementation-Title': 'openwav',
+                'Implementation-Version': version,
+                'Implementation-Vendor': 'Chris Soderquist (Dakkra)'
+    }
+}
+
 repositories {
     mavenCentral()
 }
