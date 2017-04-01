@@ -261,6 +261,13 @@ public class WavFile {
     }
 
     //UTIL
+
+    /**
+     * Converts an array of 8 bytes into a long integer
+     * @param bytes
+     * @return Converted long integer
+     * @throws WavFileException
+     */
     public long bytesToLong(byte bytes[]) throws WavFileException {
         if (bytes.length != 8)
             throw new WavFileException("INVALID ARRAY SIZE. MUST BE 8");
@@ -270,6 +277,12 @@ public class WavFile {
         return bb.getLong();
     }
 
+    /**
+     * Converts an array of 4 bytes into an integer
+     * @param bytes
+     * @return Converted integer
+     * @throws WavFileException
+     */
     public int bytesToInt(byte bytes[]) throws WavFileException {
         if (bytes.length != 4)
             throw new WavFileException("INVALID ARRAY SIZE. MUST BE 4");
@@ -279,6 +292,12 @@ public class WavFile {
         return bb.getInt();
     }
 
+    /**
+     * Converts an array of 2 bytes into a short integer
+     * @param bytes
+     * @return Converted short integer
+     * @throws WavFileException
+     */
     public short bytesToShort(byte bytes[]) throws WavFileException {
         if (bytes.length != 2)
             throw new WavFileException("INVALID ARRAY SIZE. MUST BE 2");
