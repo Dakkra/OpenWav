@@ -170,9 +170,9 @@ public class WavFile {
     }
 
     /**
-     * Returns next integer sample
+     * Gets next long integer sample
      *
-     * @return Sample in long
+     * @return Long integer sample
      */
     private long readSample(long skipFrames) throws IOException, WavFileException {
         long sample = 0;
@@ -205,20 +205,33 @@ public class WavFile {
     }
 
     //META DATA
+
+    /**
+     * Returns number of channels claimed by the wav file
+     * @return Number of channels
+     */
     public int getNumChannels() {
         return numChannels.convert();
     }
 
+    /**
+     * Returns the sample rate claimed by the wav file
+     * @return Sample rate
+     */
     public int getSampleRate() {
         return samplerate.convert();
     }
 
+    /**
+     * Returns the bit depth of and individual sample in the wave file
+     * @return bit depth of a sample
+     */
     public int getBitDepth() {
         return bitsPerSample.convert();
     }
 
     /**
-     * Caclulated from file meta-data
+     * Caclulated from file meta data
      *
      * @return fileSize form meta data
      */
@@ -226,6 +239,11 @@ public class WavFile {
         return subchunk1Size.convert() + 8;
     }
 
+    /**
+     * Calculated form the file meta data
+     * Returns the number of sample frames contained in the data
+     * @return Number of sample frames
+     */
     public int getNumFrames() {
         return (chunkSize.convert() / blockAlign.convert());
     }
